@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+title: "Audio Anomaly Detection for Large-Scale Structural Testing"
+message: "If you use this repository, please cite both the software repository, the paper, and the Zenodo dataset."
+type: software
+authors:
+  - family-names: Lopez Dubon
+    given-names: Sergio
+repository-code: "https://github.com/sergioald/audio-anomaly-detection-structural-testing"
+license: MIT
+version: 0.1.0
+date-released: 2026-06-04
+preferred-citation:
+  type: article
+  title: "An audio-based framework for anomaly detection in large-scale structural testing"
+  authors:
+    - family-names: Munko
+      given-names: Marek J.
+    - family-names: Cuthill
+      given-names: Fergus
+    - family-names: Valdivia Camacho
+      given-names: Miguel A.
+    - family-names: Ó Bradaigh
+      given-names: Conchúr M.
+    - family-names: Lopez Dubon
+      given-names: Sergio
+  journal: "Engineering Applications of Artificial Intelligence"
+  volume: "142"
+  year: 2025
+  doi: "10.1016/j.engappai.2024.109889"
+references:
+  - type: dataset
+    title: "Normal and anomalous audio data processed with the wavelet scattering transform, collected during the operation of FastBlade, a site for regenerative fatigue testing"
+    authors:
+      - family-names: Munko
+        given-names: Marek
+      - family-names: Lopez Dubon
+        given-names: Sergio
+      - family-names: Cuthill
+        given-names: Fergus
+    year: 2024
+    doi: "10.5281/zenodo.14298279"
