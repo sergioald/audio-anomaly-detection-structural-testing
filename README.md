@@ -37,7 +37,7 @@ The repository supports three workflows.
 | B. Full reproduction | public Zenodo WST `.npy` files | train CAE from scratch | reproducibility path |
 | C. New raw audio | new `.wav` files | pre-trained or retrained CAE | advanced extension path |
 
-The actual Zenodo arrays and trained model binaries are **not stored in Git**. They are downloaded or installed locally.
+The Zenodo arrays are downloaded locally. The repository includes one small pre-trained CAE model at `models/pretrained_cae_wst_latent24_structural_audio.h5` so the quick reproduction workflow can be run without first training a neural network.
 
 ## Installation
 
@@ -73,20 +73,16 @@ python scripts/download_data.py --output data/
 python scripts/check_dataset.py --data-dir data/ --strict
 ```
 
-Install the model asset ZIP locally:
-
-```bash
-python scripts/install_model_assets.py audio-model-assets.zip
-```
-
-Run the feature-map/NCC classifier pipeline:
+Run the feature-map/NCC classifier pipeline using the included pre-trained CAE:
 
 ```bash
 python scripts/evaluate_feature_map_classifier.py \
   --data-dir data/ \
-  --model models/my_paper_ae_24.h5 \
+  --model models/pretrained_cae_wst_latent24_structural_audio.h5 \
   --output-dir outputs/evaluation_pretrained
 ```
+
+The `--model` argument can be omitted because this is the default pre-trained model path.
 
 This writes:
 
@@ -106,12 +102,12 @@ python scripts/check_dataset.py --data-dir data/ --strict
 
 python scripts/train_cae.py \
   --data-dir data/ \
-  --output-model models/cae_latent24.keras \
+  --output-model models/cae_wst_latent24_retrained.keras \
   --epochs 100
 
 python scripts/evaluate_feature_map_classifier.py \
   --data-dir data/ \
-  --model models/cae_latent24.keras \
+  --model models/cae_wst_latent24_retrained.keras \
   --output-dir outputs/evaluation_retrained
 ```
 
@@ -133,7 +129,7 @@ Predict with an existing trained pipeline:
 ```bash
 python scripts/predict_new_audio.py \
   --features outputs/new_audio/features.npy \
-  --model models/my_paper_ae_24.h5 \
+  --model models/pretrained_cae_wst_latent24_structural_audio.h5 \
   --classifier outputs/evaluation_pretrained/best_classifier.joblib \
   --reference-maps outputs/evaluation_pretrained/reference_maps.npz \
   --output-dir outputs/new_audio_predictions
@@ -186,6 +182,7 @@ This repository includes:
 
 - public dataset contract for the Zenodo `.npy` files;
 - CAE architecture matching the paper appendix;
+- included pre-trained CAE model: `models/pretrained_cae_wst_latent24_structural_audio.h5`;
 - support for legacy `.h5` models and clean `.keras` models;
 - batched feature-map extraction to avoid storing large intermediate arrays;
 - NCC scoring for feature maps 18 and 19;
@@ -193,7 +190,7 @@ This repository includes:
 - raw `.wav` to WST feature generation for advanced new-data workflows;
 - CLI scripts for data checking, training, evaluation, prediction and benchmarking;
 - unit tests using small synthetic arrays, so CI does not download the 2.8 GB dataset;
-- documentation for reproducibility, dataset boundaries, model assets and GitHub setup.
+- documentation for reproducibility, dataset boundaries, model use and new-data workflows.
 
 ## Repository structure
 
@@ -217,7 +214,6 @@ audio-anomaly-detection-structural-testing/
   scripts/
     download_data.py
     check_dataset.py
-    install_model_assets.py
     train_cae.py
     evaluate_feature_map_classifier.py
     evaluate_reconstruction_baselines.py
@@ -232,12 +228,7 @@ audio-anomaly-detection-structural-testing/
     method_notes.md
     reproducibility.md
     new_data_workflow.md
-    model_assets.md
-    github_setup.md
-    release_checklist.md
     confidentiality_statement.md
-    code_audit.md
-    migration_notes.md
   tests/
     test_data_contract.py
     test_metrics.py
@@ -259,10 +250,6 @@ The CI test suite does not download large data or require TensorFlow.
 This repository does not contain raw FastBlade audio, private facility data, confidential operational records or proprietary control logic. It is designed to work with the public processed WST dataset hosted on Zenodo and with user-provided local audio files.
 
 See [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md).
-
-## GitHub publishing
-
-See [`docs/github_setup.md`](docs/github_setup.md) and [`docs/release_checklist.md`](docs/release_checklist.md).
 
 ## License
 
