@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Local data and generated outputs
+data/
+data_new/
+new_audio/
+new_raw_audio/
+outputs/
+reports/
+
+# Large/generated scientific data
+*.npy
+*.npz
+*.wav
+*.flac
+*.mp3
+*.tdms
+*.joblib
+*.pkl
+
+# Model outputs generated locally
+*.keras
+*.ckpt
+*.pb
+
+# Keep the included publication model tracked
+!models/pretrained_cae_wst_latent24_structural_audio.h5
+
+# Notebooks and editor files
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Environment/config secrets
+.env
+.env.*
