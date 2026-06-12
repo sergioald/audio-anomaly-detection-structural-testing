@@ -43,7 +43,7 @@ dependencies = [
 
 [project.optional-dependencies]
 deep-learning = [
-  "tensorflow>=2.13",
+  "tensorflow>=2.13,<2.16",
 ]
 wst = [
   "kymatio>=0.3",
