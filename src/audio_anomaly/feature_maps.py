@@ -44,10 +44,14 @@ def average_reference_maps(
     for batch in _batched(ensure_channel_axis(normal_data), batch_size):
         features = extractor.predict(batch, verbose=0)
         if features.ndim != 4:
-            raise ValueError(f"Expected feature tensor with shape (n, h, w, c), got {features.shape}")
+            raise ValueError(
+                f"Expected feature tensor with shape (n, h, w, c), got {features.shape}"
+            )
         for map_id in map_ids:
             if map_id < 0 or map_id >= features.shape[-1]:
-                raise ValueError(f"Map ID {map_id} out of range for feature tensor with {features.shape[-1]} maps")
+                raise ValueError(
+                    f"Map ID {map_id} out of range for feature tensor with {features.shape[-1]} maps"
+                )
             current = np.sum(features[..., map_id], axis=0)
             sums[map_id] = current if map_id not in sums else sums[map_id] + current
         count += features.shape[0]
@@ -76,7 +80,9 @@ def score_dataset_against_references(
         features = extractor.predict(batch, verbose=0)
         scores_for_maps = []
         for map_id in map_ids:
-            scores = normalized_cross_correlation_batch(features[..., map_id], reference_maps[map_id])
+            scores = normalized_cross_correlation_batch(
+                features[..., map_id], reference_maps[map_id]
+            )
             scores_for_maps.append(scores)
         score_batches.append(np.column_stack(scores_for_maps))
 
@@ -121,7 +127,9 @@ def rank_feature_maps_by_overlap(
     for map_id in range(normal_features.shape[-1]):
         reference = reference_features[..., map_id]
         normal_scores = normalized_cross_correlation_batch(normal_features[..., map_id], reference)
-        anomalous_scores = normalized_cross_correlation_batch(anomalous_features[..., map_id], reference)
+        anomalous_scores = normalized_cross_correlation_batch(
+            anomalous_features[..., map_id], reference
+        )
         ranked.append((map_id, histogram_overlap(normal_scores, anomalous_scores)))
     return sorted(ranked, key=lambda item: item[1])
 
@@ -132,7 +140,9 @@ def save_reference_maps(reference_maps: dict[int, np.ndarray], path: str | Path)
 
     output = Path(path)
     output.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(output, **{f"map_{int(map_id)}": value for map_id, value in reference_maps.items()})
+    np.savez_compressed(
+        output, **{f"map_{int(map_id)}": value for map_id, value in reference_maps.items()}
+    )
     return output
 
 

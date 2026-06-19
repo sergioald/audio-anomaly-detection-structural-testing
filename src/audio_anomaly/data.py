@@ -6,9 +6,9 @@ files downloaded from Zenodo into a local data directory.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
 
 import numpy as np
 
@@ -76,7 +76,11 @@ def validate_dataset_files(data_dir: str | Path) -> dict[str, bool]:
 def missing_dataset_files(data_dir: str | Path) -> list[Path]:
     """Return missing dataset file paths."""
     data_dir = Path(data_dir)
-    return [dataset_path(data_dir, key) for key in DATASET_FILES if not dataset_path(data_dir, key).exists()]
+    return [
+        dataset_path(data_dir, key)
+        for key in DATASET_FILES
+        if not dataset_path(data_dir, key).exists()
+    ]
 
 
 def load_array(data_dir: str | Path, key: str, mmap_mode: str | None = None) -> np.ndarray:
@@ -146,14 +150,18 @@ def validate_shapes(
     return messages
 
 
-def make_binary_dataset(normal_scores: np.ndarray, anomalous_scores: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def make_binary_dataset(
+    normal_scores: np.ndarray, anomalous_scores: np.ndarray
+) -> tuple[np.ndarray, np.ndarray]:
     """Build feature matrix and binary labels from normal/anomalous score matrices.
 
     Normal samples are label `0`; anomalous samples are label `1`.
     """
     x = np.vstack([np.asarray(normal_scores), np.asarray(anomalous_scores)])
-    y = np.concatenate([
-        np.zeros(len(normal_scores), dtype=int),
-        np.ones(len(anomalous_scores), dtype=int),
-    ])
+    y = np.concatenate(
+        [
+            np.zeros(len(normal_scores), dtype=int),
+            np.ones(len(anomalous_scores), dtype=int),
+        ]
+    )
     return x, y

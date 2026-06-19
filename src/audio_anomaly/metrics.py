@@ -34,7 +34,9 @@ def normalized_cross_correlation_batch(
     if sample_arr.ndim != 3:
         raise ValueError(f"Expected samples with shape (n, h, w), got {sample_arr.shape}")
     if sample_arr.shape[1:] != ref_arr.shape:
-        raise ValueError(f"Reference shape {ref_arr.shape} does not match samples {sample_arr.shape[1:]}")
+        raise ValueError(
+            f"Reference shape {ref_arr.shape} does not match samples {sample_arr.shape[1:]}"
+        )
 
     sample_zero = sample_arr - np.mean(sample_arr, axis=(1, 2), keepdims=True)
     ref_zero = ref_arr - np.mean(ref_arr)
@@ -52,7 +54,9 @@ def mean_squared_error(a: np.ndarray, b: np.ndarray) -> float:
     return float(np.mean(diff**2))
 
 
-def peak_signal_to_noise_ratio(a: np.ndarray, b: np.ndarray, data_range: float | None = None) -> float:
+def peak_signal_to_noise_ratio(
+    a: np.ndarray, b: np.ndarray, data_range: float | None = None
+) -> float:
     """Compute PSNR for two arrays."""
     a_arr = np.asarray(a)
     b_arr = np.asarray(b)

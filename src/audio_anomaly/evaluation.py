@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, Sequence
+from typing import Any
 
 import numpy as np
 
@@ -42,12 +43,22 @@ def evaluate_feature_map_pipeline(
     )
 
     normal_validation_scores = score_dataset_against_references(
-        model, dataset.normal_validation, reference_maps, layer_name=layer_name, batch_size=batch_size
+        model,
+        dataset.normal_validation,
+        reference_maps,
+        layer_name=layer_name,
+        batch_size=batch_size,
     )
     anomalous_validation_scores = score_dataset_against_references(
-        model, dataset.anomalous_validation, reference_maps, layer_name=layer_name, batch_size=batch_size
+        model,
+        dataset.anomalous_validation,
+        reference_maps,
+        layer_name=layer_name,
+        batch_size=batch_size,
     )
-    x_validation, y_validation = make_binary_dataset(normal_validation_scores, anomalous_validation_scores)
+    x_validation, y_validation = make_binary_dataset(
+        normal_validation_scores, anomalous_validation_scores
+    )
 
     normal_test_scores = score_dataset_against_references(
         model, dataset.normal_test, reference_maps, layer_name=layer_name, batch_size=batch_size

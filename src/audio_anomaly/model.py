@@ -35,7 +35,9 @@ def build_cae_latent24(input_shape: tuple[int, int, int] = (221, 375, 1)):
     x = layers.Conv2D(64, (5, 5), activation="leaky_relu", padding="same", name="encoder_conv2")(x)
     x = layers.MaxPooling2D((2, 2), padding="same", name="encoder_pool2")(x)
 
-    x = layers.Conv2D(64, (3, 3), strides=2, activation="leaky_relu", padding="same", name="encoder_conv3")(x)
+    x = layers.Conv2D(
+        64, (3, 3), strides=2, activation="leaky_relu", padding="same", name="encoder_conv3"
+    )(x)
     x = layers.MaxPooling2D((2, 2), padding="same", name="encoder_pool3")(x)
 
     x = layers.Conv2D(32, (2, 2), activation="leaky_relu", padding="same", name="encoder_conv4")(x)
@@ -44,19 +46,33 @@ def build_cae_latent24(input_shape: tuple[int, int, int] = (221, 375, 1)):
     x = layers.Conv2D(16, (2, 2), activation="leaky_relu", padding="same", name="encoder_conv5")(x)
     x = layers.MaxPooling2D((2, 2), padding="same", name="encoder_pool5")(x)
 
-    encoded = layers.Conv2D(1, (2, 2), activation="leaky_relu", padding="same", name="latent_code")(x)
+    encoded = layers.Conv2D(1, (2, 2), activation="leaky_relu", padding="same", name="latent_code")(
+        x
+    )
 
-    x = layers.Conv2DTranspose(16, (2, 2), activation="leaky_relu", padding="same", name="decoder_deconv1")(encoded)
+    x = layers.Conv2DTranspose(
+        16, (2, 2), activation="leaky_relu", padding="same", name="decoder_deconv1"
+    )(encoded)
     x = layers.UpSampling2D((2, 2), name="decoder_upsample1")(x)
-    x = layers.Conv2DTranspose(32, (2, 2), activation="leaky_relu", padding="same", name="decoder_deconv2")(x)
+    x = layers.Conv2DTranspose(
+        32, (2, 2), activation="leaky_relu", padding="same", name="decoder_deconv2"
+    )(x)
     x = layers.UpSampling2D((2, 2), name="decoder_upsample2")(x)
-    x = layers.Conv2DTranspose(64, (2, 2), activation="leaky_relu", padding="same", name="decoder_deconv3")(x)
+    x = layers.Conv2DTranspose(
+        64, (2, 2), activation="leaky_relu", padding="same", name="decoder_deconv3"
+    )(x)
     x = layers.UpSampling2D((2, 2), name="decoder_upsample3")(x)
-    x = layers.Conv2DTranspose(64, (3, 3), strides=2, activation="leaky_relu", padding="same", name="decoder_deconv4")(x)
+    x = layers.Conv2DTranspose(
+        64, (3, 3), strides=2, activation="leaky_relu", padding="same", name="decoder_deconv4"
+    )(x)
     x = layers.UpSampling2D((2, 2), name="decoder_upsample4")(x)
-    x = layers.Conv2DTranspose(128, (5, 5), activation="leaky_relu", padding="same", name="decoder_deconv5")(x)
+    x = layers.Conv2DTranspose(
+        128, (5, 5), activation="leaky_relu", padding="same", name="decoder_deconv5"
+    )(x)
     x = layers.UpSampling2D((2, 2), name="decoder_upsample5")(x)
-    x = layers.Conv2DTranspose(1, (7, 7), activation="sigmoid", padding="same", name="decoder_output_conv")(x)
+    x = layers.Conv2DTranspose(
+        1, (7, 7), activation="sigmoid", padding="same", name="decoder_output_conv"
+    )(x)
     output = layers.Cropping2D(((17, 18), (4, 5)), name="output_cropping")(x)
 
     return keras.Model(input_img, output, name="cae_latent24")

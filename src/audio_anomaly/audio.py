@@ -8,12 +8,11 @@ with the same high-level processing assumptions used in the paper workflow.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Sequence
 
 import numpy as np
-
 
 SUPPORTED_AUDIO_SUFFIXES = {".wav"}
 
@@ -171,13 +170,21 @@ def compute_wst_features(
     return np.stack(features).astype(np.float32)
 
 
-def iter_audio_files(audio_dir: str | Path, suffixes: Sequence[str] = tuple(SUPPORTED_AUDIO_SUFFIXES)) -> list[Path]:
+def iter_audio_files(
+    audio_dir: str | Path, suffixes: Sequence[str] = tuple(SUPPORTED_AUDIO_SUFFIXES)
+) -> list[Path]:
     """Return sorted supported audio files from a directory."""
     directory = Path(audio_dir)
     suffix_set = {suffix.lower() for suffix in suffixes}
-    files = sorted(path for path in directory.rglob("*") if path.is_file() and path.suffix.lower() in suffix_set)
+    files = sorted(
+        path
+        for path in directory.rglob("*")
+        if path.is_file() and path.suffix.lower() in suffix_set
+    )
     if not files:
-        raise FileNotFoundError(f"No supported audio files found in {directory}. Supported suffixes: {sorted(suffix_set)}")
+        raise FileNotFoundError(
+            f"No supported audio files found in {directory}. Supported suffixes: {sorted(suffix_set)}"
+        )
     return files
 
 
@@ -205,7 +212,9 @@ def compute_wst_batch_from_audio_dir(
         )
         if progress:
             print(f"{audio_path}: {len(windows)} windows")
-        features = compute_wst_features(windows, j=j, q=q, shape_check=shape_check, progress=progress)
+        features = compute_wst_features(
+            windows, j=j, q=q, shape_check=shape_check, progress=progress
+        )
         all_features.append(features)
         hop_seconds = sample_seconds - overlap_seconds
         for index in range(len(windows)):
@@ -234,7 +243,9 @@ def write_window_records_csv(records: Iterable[AudioWindowRecord], path: str | P
     output = Path(path)
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["source_file", "window_index", "start_seconds", "end_seconds"])
+        writer = csv.DictWriter(
+            handle, fieldnames=["source_file", "window_index", "start_seconds", "end_seconds"]
+        )
         writer.writeheader()
         for record in records:
             writer.writerow(

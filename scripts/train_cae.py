@@ -13,7 +13,9 @@ from audio_anomaly.model import build_cae_latent24, compile_autoencoder
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
-    parser.add_argument("--output-model", type=Path, default=Path("models/cae_wst_latent24_retrained.keras"))
+    parser.add_argument(
+        "--output-model", type=Path, default=Path("models/cae_wst_latent24_retrained.keras")
+    )
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--validation-fraction", type=float, default=0.15)

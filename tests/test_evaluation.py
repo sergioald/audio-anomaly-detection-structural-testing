@@ -14,7 +14,9 @@ def test_evaluate_feature_map_pipeline_with_monkeypatched_scoring(monkeypatch):
     )
     reference_maps = {0: np.zeros((2, 2)), 1: np.ones((2, 2))}
 
-    def fake_average_reference_maps(model, normal_data, layer_name=None, map_ids=(18, 19), batch_size=16):
+    def fake_average_reference_maps(
+        model, normal_data, layer_name=None, map_ids=(18, 19), batch_size=16
+    ):
         assert model == "fake-model"
         assert normal_data.shape == (4, 2, 2)
         assert tuple(map_ids) == (0, 1)
@@ -26,7 +28,9 @@ def test_evaluate_feature_map_pipeline_with_monkeypatched_scoring(monkeypatch):
             return np.column_stack([np.ones(len(data)), np.zeros(len(data))])
         return np.column_stack([np.zeros(len(data)), np.ones(len(data))])
 
-    monkeypatch.setattr("audio_anomaly.evaluation.average_reference_maps", fake_average_reference_maps)
+    monkeypatch.setattr(
+        "audio_anomaly.evaluation.average_reference_maps", fake_average_reference_maps
+    )
     monkeypatch.setattr(
         "audio_anomaly.evaluation.score_dataset_against_references",
         fake_score_dataset_against_references,

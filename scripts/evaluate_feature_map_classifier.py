@@ -19,8 +19,17 @@ from audio_anomaly.model import find_feature_layer, load_autoencoder
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
-    parser.add_argument("--model", type=Path, default=Path("models/pretrained_cae_wst_latent24_structural_audio.h5"), help="Path to trained `.keras` or `.h5` CAE model")
-    parser.add_argument("--layer-name", default=None, help="Feature layer name. If omitted, encoder_conv2 or the first 64-filter Conv2D layer is used.")
+    parser.add_argument(
+        "--model",
+        type=Path,
+        default=Path("models/pretrained_cae_wst_latent24_structural_audio.h5"),
+        help="Path to trained `.keras` or `.h5` CAE model",
+    )
+    parser.add_argument(
+        "--layer-name",
+        default=None,
+        help="Feature layer name. If omitted, encoder_conv2 or the first 64-filter Conv2D layer is used.",
+    )
     parser.add_argument("--map-ids", type=int, nargs="+", default=[18, 19])
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/evaluation"))

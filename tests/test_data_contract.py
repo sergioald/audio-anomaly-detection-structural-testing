@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 
 from audio_anomaly.data import (
@@ -16,7 +14,10 @@ def test_public_dataset_filenames_are_defined():
 
 
 def test_legacy_filename_mapping():
-    assert LEGACY_TO_PUBLIC_FILENAMES["REVISIONS_combined_training_DS_scat.npy"] == "Normal_Data_Training.npy"
+    assert (
+        LEGACY_TO_PUBLIC_FILENAMES["REVISIONS_combined_training_DS_scat.npy"]
+        == "Normal_Data_Training.npy"
+    )
 
 
 def test_ensure_channel_axis_adds_singleton_channel():

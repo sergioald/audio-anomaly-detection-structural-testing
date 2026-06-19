@@ -14,7 +14,9 @@ normal = reference + rng.normal(scale=0.05, size=(20, 8, 8))
 anomalous = rng.normal(scale=1.0, size=(8, 8, 8))
 
 normal_scores = np.array([[normalized_cross_correlation(sample, reference)] for sample in normal])
-anomalous_scores = np.array([[normalized_cross_correlation(sample, reference)] for sample in anomalous])
+anomalous_scores = np.array(
+    [[normalized_cross_correlation(sample, reference)] for sample in anomalous]
+)
 
 x, y = make_binary_dataset(normal_scores, anomalous_scores)
 classifiers = train_classifiers(x, y)

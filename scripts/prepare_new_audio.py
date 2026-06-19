@@ -18,8 +18,12 @@ from audio_anomaly.audio import compute_wst_batch_from_audio_dir, write_window_r
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--audio-dir", type=Path, required=True)
-    parser.add_argument("--output-features", type=Path, default=Path("outputs/new_audio/features.npy"))
-    parser.add_argument("--output-windows", type=Path, default=Path("outputs/new_audio/windows.csv"))
+    parser.add_argument(
+        "--output-features", type=Path, default=Path("outputs/new_audio/features.npy")
+    )
+    parser.add_argument(
+        "--output-windows", type=Path, default=Path("outputs/new_audio/windows.csv")
+    )
     parser.add_argument("--sample-rate", type=int, default=48_000)
     parser.add_argument("--sample-seconds", type=float, default=0.5)
     parser.add_argument("--overlap-seconds", type=float, default=0.1)

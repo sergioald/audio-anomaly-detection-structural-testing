@@ -16,22 +16,32 @@ import numpy as np
 from sklearn.decomposition import PCA
 
 from audio_anomaly.data import ensure_channel_axis, load_array
-from audio_anomaly.metrics import mean_absolute_error, mean_squared_error, normalized_cross_correlation
+from audio_anomaly.metrics import (
+    mean_absolute_error,
+    mean_squared_error,
+    normalized_cross_correlation,
+)
 from audio_anomaly.model import load_autoencoder
 
 
-def reconstruction_metrics(original: np.ndarray, reconstructed: np.ndarray) -> dict[str, list[float]]:
+def reconstruction_metrics(
+    original: np.ndarray, reconstructed: np.ndarray
+) -> dict[str, list[float]]:
     return {
         "mae": [mean_absolute_error(a, b) for a, b in zip(original, reconstructed, strict=True)],
         "mse": [mean_squared_error(a, b) for a, b in zip(original, reconstructed, strict=True)],
-        "ncc": [normalized_cross_correlation(a, b) for a, b in zip(original, reconstructed, strict=True)],
+        "ncc": [
+            normalized_cross_correlation(a, b) for a, b in zip(original, reconstructed, strict=True)
+        ],
     }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
-    parser.add_argument("--model", type=Path, default=None, help="Optional CAE model for reconstruction baseline")
+    parser.add_argument(
+        "--model", type=Path, default=None, help="Optional CAE model for reconstruction baseline"
+    )
     parser.add_argument("--pca-components", type=int, nargs="+", default=[24, 1347])
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/reconstruction_baselines"))
     args = parser.parse_args()

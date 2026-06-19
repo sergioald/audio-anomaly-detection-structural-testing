@@ -26,7 +26,9 @@ def candidate_classifiers(random_state: int = 42) -> dict[str, Any]:
     }
 
 
-def train_classifiers(x_train: np.ndarray, y_train: np.ndarray, random_state: int = 42) -> dict[str, Any]:
+def train_classifiers(
+    x_train: np.ndarray, y_train: np.ndarray, random_state: int = 42
+) -> dict[str, Any]:
     """Train all candidate classifiers."""
     trained = candidate_classifiers(random_state=random_state)
     for classifier in trained.values():
@@ -39,18 +41,23 @@ def evaluate_classifier(classifier: Any, x_test: np.ndarray, y_test: np.ndarray)
     y_pred = classifier.predict(x_test)
     return {
         "accuracy": float(accuracy_score(y_test, y_pred)),
-        "classification_report": classification_report(y_test, y_pred, output_dict=True, zero_division=0),
+        "classification_report": classification_report(
+            y_test, y_pred, output_dict=True, zero_division=0
+        ),
         "confusion_matrix": confusion_matrix(y_test, y_pred).tolist(),
     }
 
 
-def evaluate_classifiers(classifiers: dict[str, Any], x_test: np.ndarray, y_test: np.ndarray) -> dict[str, Any]:
+def evaluate_classifiers(
+    classifiers: dict[str, Any], x_test: np.ndarray, y_test: np.ndarray
+) -> dict[str, Any]:
     """Evaluate multiple classifiers."""
     return {name: evaluate_classifier(clf, x_test, y_test) for name, clf in classifiers.items()}
 
 
 def select_best_classifier(results: dict[str, Any], positive_label: str = "1") -> str:
     """Select the best model, prioritising anomalous recall then accuracy."""
+
     def key(item):
         name, metrics = item
         report = metrics["classification_report"]

@@ -43,28 +43,34 @@ class FakeModel:
 
 
 def test_feature_layer_names_returns_layers_with_4d_outputs():
-    model = FakeModel([
-        Dense("flat", output_dims=(None, 10)),
-        Conv2D("conv", output_dims=(None, 4, 4, 8)),
-    ])
+    model = FakeModel(
+        [
+            Dense("flat", output_dims=(None, 10)),
+            Conv2D("conv", output_dims=(None, 4, 4, 8)),
+        ]
+    )
 
     assert feature_layer_names(model) == ["conv"]
 
 
 def test_find_feature_layer_prefers_named_layer():
-    model = FakeModel([
-        Conv2D("encoder_conv2", filters=64),
-        Conv2D("other_conv", filters=64),
-    ])
+    model = FakeModel(
+        [
+            Conv2D("encoder_conv2", filters=64),
+            Conv2D("other_conv", filters=64),
+        ]
+    )
 
     assert find_feature_layer(model, preferred="encoder_conv2") == "encoder_conv2"
 
 
 def test_find_feature_layer_falls_back_to_first_64_filter_conv2d():
-    model = FakeModel([
-        Conv2D("conv_a", filters=32),
-        Conv2D("conv_b", filters=64),
-    ])
+    model = FakeModel(
+        [
+            Conv2D("conv_a", filters=32),
+            Conv2D("conv_b", filters=64),
+        ]
+    )
 
     assert find_feature_layer(model, preferred="missing") == "conv_b"
 

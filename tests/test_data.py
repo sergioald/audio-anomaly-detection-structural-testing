@@ -88,7 +88,8 @@ def test_ensure_channel_axis_adds_or_preserves_single_channel():
 def test_ensure_channel_axis_rejects_invalid_shapes(bad_shape):
     with pytest.raises(ValueError, match="Expected array"):
         ensure_channel_axis(np.zeros(bad_shape, dtype=np.float32))
-        
+
+
 def test_ensure_channel_axis_preserves_generic_single_channel_4d_arrays():
     array = np.zeros((2, 10, 10, 1), dtype=np.float32)
 
