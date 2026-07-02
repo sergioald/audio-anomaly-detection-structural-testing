@@ -304,6 +304,8 @@ Supporting documents:
 - [`docs/portfolio_summary.md`](docs/portfolio_summary.md) — portfolio-facing summary of what this repository demonstrates
 - [`docs/new_data_workflow.md`](docs/new_data_workflow.md) — using new raw audio
 - [`docs/confidentiality_statement.md`](docs/confidentiality_statement.md) — public/private data boundary
+- [`docs/case_study.md`](docs/case_study.md) — technical portfolio case study.
+- [`docs/research_software_card.md`](docs/research_software_card.md) — compact research-software card covering scope, inputs, outputs, reuse, and limits.
 
 ## Confidentiality and data boundary
 
